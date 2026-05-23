@@ -64,6 +64,16 @@ The project includes product browsing, search/filtering, product details, cart m
 
 ---
 
+# 🚀 Production Highlights
+
+- **Automated Routing:** Implemented `vercel.json` to properly handle SPA (Single Page Application) routing, ensuring React Router routes work correctly even after page refreshes or direct URL access.
+- **Background Tasks:** Utilized FastAPI `BackgroundTasks` to process transactional emails asynchronously, improving API responsiveness during checkout.
+- **Transactional Email API:** Integrated the Resend API instead of traditional SMTP for reliable email delivery and improved inbox placement.
+- **Production Deployment:** Configured frontend and backend deployments on Vercel and Render with production-ready environment configuration.
+- **API Wake-Up Automation:** Configured automated uptime pings using `cron-job.org` to prevent backend cold starts on Render free-tier hosting.
+
+---
+
 # 📁 Project Structure
 
 ```text
@@ -86,6 +96,7 @@ flipkart_clone/
 └── frontend/
     ├── package.json
     ├── vite.config.js
+    ├── vercel.json
     └── src/
         ├── App.jsx
         ├── main.jsx
@@ -138,7 +149,6 @@ Order items store the product price at the time of purchase so previous order re
 
 ---
 
----
 # 🎨 Application Wireframe
 
 ![Application Wireframe](screenshots/wireframe.png)
@@ -232,19 +242,16 @@ Create a `.env` file inside the `backend/` folder:
 
 ```env
 DATABASE_URL=postgresql://postgres:your_postgres_password@localhost:5432/flipkart_db
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=https://flipkart-clone-ten-flax.vercel.app
 
-MAIL_USERNAME=your_email@gmail.com
-MAIL_PASSWORD=your_gmail_app_password
-MAIL_FROM=your_email@gmail.com
-MAIL_SERVER=smtp.gmail.com
-MAIL_PORT=587
+# Email Service
+RESEND_API_KEY=re_your_api_key_here
 ```
 
 ### Notes
 
 - Use your own PostgreSQL password in `DATABASE_URL`.
-- For Gmail email notifications, use a Gmail App Password.
+- The project uses the Resend API for transactional emails instead of traditional SMTP.
 - Do not commit `.env` to GitHub.
 
 ---
@@ -288,6 +295,18 @@ http://localhost:5173
 
 ---
 
+# ☁️ Deployment Details
+
+- **Backend:** Hosted on Render.  
+  Automated uptime pings are configured using `cron-job.org` to prevent cold starts on the free hosting tier.
+
+- **Frontend:** Hosted on Vercel.  
+  Includes a `vercel.json` configuration file to support React Router client-side routing and prevent 404 errors on refresh.
+
+- **Database:** PostgreSQL database deployed using a cloud-hosted relational database service.
+
+---
+
 # ⚡ Caching Strategy
 
 Caching is applied only to:
@@ -311,6 +330,8 @@ Not cached:
 - Environment variable protection
 - User-specific cart and wishlist
 - CORS configuration
+- Production environment separation
+- Transactional email security using Resend API
 
 ---
 
@@ -325,6 +346,7 @@ Not cached:
 - Redis caching for production-level performance
 - Pagination and sorting on product listing page
 - Unit tests and integration tests
+- Docker containerization
 
 ---
 

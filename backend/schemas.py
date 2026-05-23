@@ -26,7 +26,7 @@ class UserResponse(BaseModel):
     addresses: list = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # -------------------------
 # PRODUCT SCHEMAS

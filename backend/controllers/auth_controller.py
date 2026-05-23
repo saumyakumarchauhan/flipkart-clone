@@ -26,7 +26,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 @router.post("/signup", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    user_email_lower = user.email.lower() # Force lowercase
+    
+    db_user = db.query(models.User).filter(models.User.email == user_email_lower).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
@@ -39,7 +41,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     new_user = models.User(
         first_name=user.firstName,
         last_name=user.lastName,
-        email=user.email,
+        email=user_email_lower, # Save lowercase
         phone=user.phone,
         gender=user.gender,
         password_hash=hashed_password
@@ -53,7 +55,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login")
 def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    user_email_lower = user.email.lower() # Force lowercase
+    
+    db_user = db.query(models.User).filter(models.User.email == user_email_lower).first()
     
     if not db_user or not verify_password(user.password, db_user.password_hash):
         raise HTTPException(

@@ -7,3 +7,4 @@ bcrypt
 fastapi-cache2
 pydantic
 sqlalchemy-utils
+jinja2

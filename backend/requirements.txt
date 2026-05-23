@@ -8,3 +8,4 @@ fastapi-cache2
 pydantic
 sqlalchemy-utils
 jinja2
+email-validator

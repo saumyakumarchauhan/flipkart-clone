@@ -1,0 +1,15 @@
+# --- Backend (Python/FastAPI) ---
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+
+# --- Frontend (React/Vite) ---
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# --- General/OS ---
+.DS_Store
+Thumbs.db

@@ -22,6 +22,11 @@ def update_profile(user_id: int, profile_data: schemas.UserUpdate, db: Session =
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # Add this check inside your update_profile function
+    existing_user = db.query(models.User).filter(models.User.email == profile_data.email).first()
+    if existing_user and existing_user.id != user.id:
+        raise HTTPException(status_code=400, detail="Email already registered by another user")
+    
     user.first_name = profile_data.first_name
     user.last_name = profile_data.last_name
     user.email = profile_data.email

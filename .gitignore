@@ -1,11 +1,12 @@
-# --- Backend (Python/FastAPI) ---
+# --- Python/FastAPI ---
+**/__pycache__/
+**/*.pyc
 backend/venv/
-backend/__pycache__/
-backend/*.pyc
+.env
 backend/.env
 
-# --- Frontend (React/Vite) ---
-frontend/node_modules/
+# --- Node/React ---
+**/node_modules/
 frontend/dist/
 frontend/dist-ssr/
 frontend/*.local

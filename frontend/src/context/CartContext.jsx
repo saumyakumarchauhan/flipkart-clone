@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/cart/${user.id}`);
+      const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/cart/${user.id}`);
       if (response.ok) {
         const data = await response.json();
         setCartItems(data);
@@ -33,7 +33,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product) => {
     if (!user) return; // Guard clause
     try {
-      await fetch('http://127.0.0.1:8000/api/cart/add', {
+      await fetch('https://flipkart-backend-guta.onrender.com/api/cart/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, product_id: product.id, quantity: 1 })
@@ -47,7 +47,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (cartItemId) => {
     setCartItems((prev) => prev.filter(item => item.id !== cartItemId));
     try {
-      await fetch(`http://127.0.0.1:8000/api/cart/remove/${cartItemId}`, { method: 'DELETE' });
+      await fetch(`https://flipkart-backend-guta.onrender.com/api/cart/remove/${cartItemId}`, { method: 'DELETE' });
     } catch (error) {
       console.error("Failed to remove from cart:", error);
       fetchCart();
@@ -59,7 +59,7 @@ export const CartProvider = ({ children }) => {
       prev.map(item => item.id === cartItemId ? { ...item, quantity: newQuantity } : item)
     );
     try {
-      await fetch(`http://127.0.0.1:8000/api/cart/update/${cartItemId}?quantity=${newQuantity}`, { method: 'PUT' });
+      await fetch(`https://flipkart-backend-guta.onrender.com/api/cart/update/${cartItemId}?quantity=${newQuantity}`, { method: 'PUT' });
     } catch (error) {
       console.error("Failed to update quantity:", error);
       fetchCart();

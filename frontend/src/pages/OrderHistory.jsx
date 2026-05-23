@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // IMPORT CONTEXT
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // DYNAMIC USER
+  const { user } = useAuth(); 
 
-  // --- NEW: States for the Checkbox Filters ---
+  // States for the Checkbox Filters
   const [filterOnTheWay, setFilterOnTheWay] = useState(false);
   const [filterConfirmed, setFilterConfirmed] = useState(true); // Checked by default
 
   useEffect(() => {
     const fetchOrders = async () => {
+      if (!user) return; // Guard clause: wait until user is loaded
+
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/orders/1'); // Fetch for user ID 1
+        // DYNAMIC URL ID
+        const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/orders/${user.id}`); 
         if (response.ok) {
           const data = await response.json();
           setOrders(data);
@@ -25,9 +32,9 @@ const OrderHistory = () => {
       }
     };
     fetchOrders();
-  }, []);
+  }, [user]);
 
-  // --- NEW: Advanced Search & Status Filtering ---
+  // Advanced Search & Status Filtering
   const filteredOrders = orders
     .map((order) => {
       const searchLower = searchTerm.toLowerCase();

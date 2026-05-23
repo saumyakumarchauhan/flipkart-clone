@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext'; // IMPORT CONTEXT
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null); // RENAMED TO userData
   const [loading, setLoading] = useState(true);
+  
+  // DYNAMIC USER FROM CONTEXT
+  const { user } = useAuth(); 
 
   // Edit States
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -13,18 +17,19 @@ const Profile = () => {
   const [isAddingAddress, setIsAddingAddress] = useState(false);
   const [newAddress, setNewAddress] = useState({ name: '', phone: '', pincode: '', address: '' });
 
-  const DEFAULT_USER_ID = 1;
-
   // Fetch user data on load
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${DEFAULT_USER_ID}`);
+      // DYNAMIC ID
+      const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/users/${user.id}`); 
       const data = await response.json();
-      setUser(data);
+      setUserData(data);
       setEditForm({
         first_name: data.first_name,
         last_name: data.last_name,
@@ -40,7 +45,8 @@ const Profile = () => {
 
   const handleProfileSave = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${DEFAULT_USER_ID}/profile`, {
+      // DYNAMIC ID
+      const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/users/${user.id}/profile`, { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editForm)
@@ -55,9 +61,10 @@ const Profile = () => {
   };
 
   const handleAddressSave = async () => {
-    const updatedAddresses = [...(user.addresses || []), newAddress];
+    const updatedAddresses = [...(userData.addresses || []), newAddress];
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${DEFAULT_USER_ID}/addresses`, {
+      // DYNAMIC ID
+      const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/users/${user.id}/addresses`, { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: updatedAddresses })
@@ -73,9 +80,10 @@ const Profile = () => {
   };
 
   const removeAddress = async (index) => {
-    const updatedAddresses = user.addresses.filter((_, i) => i !== index);
+    const updatedAddresses = userData.addresses.filter((_, i) => i !== index);
     try {
-      await fetch(`http://127.0.0.1:8000/api/users/${DEFAULT_USER_ID}/addresses`, {
+      // DYNAMIC ID
+      await fetch(`https://flipkart-backend-guta.onrender.com/api/users/${user.id}/addresses`, { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: updatedAddresses })
@@ -86,7 +94,7 @@ const Profile = () => {
     }
   };
 
-  if (loading) return <div className="flex justify-center p-20"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2874f0]"></div></div>;
+  if (loading || !userData) return <div className="flex justify-center p-20"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2874f0]"></div></div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-10 flex flex-col md:flex-row gap-6 items-start mt-8 pb-20">
@@ -98,7 +106,7 @@ const Profile = () => {
           <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/profile-pic-male_4811a1.svg" alt="Profile" className="w-12 h-12" />
           <div>
             <p className="text-xs text-gray-500">Hello,</p>
-            <p className="font-semibold text-gray-900">{user.first_name} {user.last_name}</p>
+            <p className="font-semibold text-gray-900">{userData.first_name} {userData.last_name}</p>
           </div>
         </div>
 
@@ -199,7 +207,7 @@ const Profile = () => {
 
             {/* List Saved Addresses */}
             <div className="flex flex-col gap-4 mt-4">
-              {user.addresses && user.addresses.map((addr, index) => (
+              {userData.addresses && userData.addresses.map((addr, index) => (
                 <div key={index} className="border border-gray-200 p-4 rounded-sm flex justify-between group bg-white">
                   <div>
                     <div className="flex items-center gap-4 mb-2">

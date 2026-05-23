@@ -20,7 +20,7 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlist = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/wishlist/${user.id}`);
+      const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/wishlist/${user.id}`);
       if (response.ok) {
         const data = await response.json();
         setWishlistItems(data);
@@ -43,7 +43,7 @@ export const WishlistProvider = ({ children }) => {
     }
 
     try {
-      await fetch('http://127.0.0.1:8000/api/wishlist/toggle', {
+      await fetch('https://flipkart-backend-guta.onrender.com/api/wishlist/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

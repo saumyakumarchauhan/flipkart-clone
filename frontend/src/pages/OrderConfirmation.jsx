@@ -4,12 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 const OrderConfirmation = () => {
   const location = useLocation();
   
-  // We grab the state passed from the Checkout page. 
-  // If someone visits this URL directly, we provide fallback dummy data.
-  const { paymentMethod, orderId } = location.state || { 
-    paymentMethod: 'COD', 
-    orderId: 'OD-' + Math.floor(1000000000 + Math.random() * 9000000000) 
-  };
+  // Safe destructuring using optional chaining to prevent crashes on page refresh
+  const paymentMethod = location.state?.paymentMethod || 'COD';
+  const orderId = location.state?.orderId || 'OD-' + Math.floor(1000000000 + Math.random() * 9000000000);
 
   return (
     <div className="max-w-3xl mx-auto px-4 mt-12 flex flex-col items-center justify-center">

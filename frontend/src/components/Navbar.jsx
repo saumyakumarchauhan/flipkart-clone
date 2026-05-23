@@ -35,8 +35,8 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Search Bar - White background UI */}
-          <form onSubmit={handleSearch} className="flex-1 max-w-2xl bg-white flex items-center rounded-sm shadow-sm overflow-hidden hidden sm:flex">
+          {/* Search Bar - Removed 'hidden sm:flex' to enable on mobile */}
+          <form onSubmit={handleSearch} className="flex-1 max-w-2xl bg-white flex items-center rounded-sm shadow-sm overflow-hidden">
             <input 
               type="text" 
               value={searchTerm}

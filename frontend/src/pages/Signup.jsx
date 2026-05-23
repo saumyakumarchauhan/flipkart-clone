@@ -19,7 +19,7 @@ const Signup = () => {
 
     try {
       // Sending data to your FastAPI backend!
-      const response = await fetch('http://127.0.0.1:8000/api/auth/signup', {
+      const response = await fetch('https://flipkart-backend-guta.onrender.com/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

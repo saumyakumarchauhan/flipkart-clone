@@ -25,7 +25,7 @@ const ProductList = () => {
         if (searchQuery) params.append('search', searchQuery);
         if (categoryQuery) params.append('category', categoryQuery);
 
-        const response = await fetch(`http://127.0.0.1:8000/api/products/?${params.toString()}`);
+        const response = await fetch(`https://flipkart-backend-guta.onrender.com/api/products/?${params.toString()}`);
         if (!response.ok) throw new Error('Failed to fetch products');
         
         const data = await response.json();

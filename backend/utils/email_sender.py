@@ -16,12 +16,21 @@ APP_PASSWORD = os.getenv("EMAIL_PASS")
 BASE_URL = os.getenv("FRONTEND_URL", "http://localhost:5173") 
 
 def send_order_confirmation_email(receiver_email: str, user_name: str, order_number: str, total_amount: float, items: list):
-    # Safety check so the server doesn't crash if .env variables are missing
+    print(f"DEBUG: STARTING EMAIL SEND TO {receiver_email}")
+    
     if not SENDER_EMAIL or not APP_PASSWORD:
-        print("Warning: Email credentials not found in .env. Skipping email.")
+        print("DEBUG: ERROR - SENDER_EMAIL or APP_PASSWORD missing from Environment Variables!")
         return
 
     try:
+        print("DEBUG: Attempting to connect to SMTP server...")
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        
+        print("DEBUG: Attempting to login...")
+        server.login(SENDER_EMAIL, APP_PASSWORD)
+        print("DEBUG: SMTP Login successful!")
+
         msg = MIMEMultipart()
         msg['From'] = SENDER_EMAIL
         msg['To'] = receiver_email
@@ -120,7 +129,9 @@ def send_order_confirmation_email(receiver_email: str, user_name: str, order_num
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(SENDER_EMAIL, APP_PASSWORD)
+        print("DEBUG: Attempting to send message...")
         server.send_message(msg)
+        print("DEBUG: Message sent successfully!")
         server.quit()
         print(f"Premium Email successfully sent to {receiver_email}!")
         

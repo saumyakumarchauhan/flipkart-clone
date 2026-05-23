@@ -9,3 +9,4 @@ pydantic
 sqlalchemy-utils
 jinja2
 email-validator
+resend

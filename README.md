@@ -10,7 +10,7 @@ The project includes product browsing, search/filtering, product details, cart m
 - **GitHub Repository:** [View Repository](https://github.com/saumyakumarchauhan/flipkart-clone)
 - **Live Frontend:** [Open Application](https://flipkart-clone-ten-flax.vercel.app/)
 - **Backend API:** [Open API](https://flipkart-backend-guta.onrender.com/)
-- **Demo Video:** Add your demo video link here
+- **Demo Video:** Coming Soon...
 
 ---
 
